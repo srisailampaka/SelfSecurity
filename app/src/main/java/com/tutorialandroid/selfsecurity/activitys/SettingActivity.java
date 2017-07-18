@@ -1,6 +1,7 @@
 package com.tutorialandroid.selfsecurity.activitys;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +17,7 @@ import butterknife.OnClick;
 
 public class SettingActivity extends AppCompatActivity {
     private final String TAG=SettingActivity.class.getSimpleName();
+    private SharedPreferences sharedPreferences;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.btn_back)
@@ -32,6 +34,8 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
+        sharedPreferences=getSharedPreferences("userinfo",MODE_PRIVATE);
+        aSwitch.setChecked(sharedPreferences.getBoolean("alertswitch",false));
         if (toolbar != null){
             toolbar.setTitle(R.string.settings);
             toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -50,6 +54,10 @@ public class SettingActivity extends AppCompatActivity {
                 startActivity(new Intent(SettingActivity.this,TimerSettingActivity.class));
                 break;
             case R.id.swichbutton:
+                sharedPreferences=getSharedPreferences("userinfo",MODE_PRIVATE);
+                SharedPreferences.Editor edit=sharedPreferences.edit();
+                edit.putBoolean("alertswitch",aSwitch.isChecked());
+                edit.commit();
                 break;
             default:
                 break;
