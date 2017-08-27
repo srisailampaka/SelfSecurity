@@ -29,15 +29,15 @@ public class EditContactAdapter extends RecyclerView.Adapter<EditContactAdapter.
         inflater=LayoutInflater.from(mContext);
     }
     @Override
-    public EditContactAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view=inflater.inflate(R.layout.edit_contact_item,parent,false);
-        EditContactAdapter.ViewHolder holder=new EditContactAdapter.ViewHolder(view);
+        ViewHolder holder=new ViewHolder(view);
 
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(EditContactAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         ContactDetails details=arrayList.get(position);
         holder.txtId.setText(String.valueOf(position+1));
         holder.txtName.setText(details.getName());

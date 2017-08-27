@@ -7,6 +7,8 @@
     <string name="personal_information">Personal Information</string>
     <string name="emergency_contacts">Emergency Contacts</string>
     <string name="panic">Panic</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
     <string name="first_aid_title">First Aid Instructions</string>
     <string name="first_aid_instructions">1. If you\'re dealing with smaller cuts and scrapes where blood is flowing, the first order of
 

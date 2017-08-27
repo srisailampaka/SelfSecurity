@@ -2,9 +2,12 @@ package com.tutorialandroid.selfsecurity.activitys;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
 import android.support.annotation.BinderThread;
@@ -19,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tutorialandroid.selfsecurity.database.ContactsProvider;
 import com.tutorialandroid.selfsecurity.model.ContactDetails;
 import com.tutorialandroid.selfsecurity.R;
 import com.tutorialandroid.selfsecurity.database.DataBaseHandler;
@@ -42,7 +46,7 @@ public class AddFromContactsActivity extends AppCompatActivity implements TokenC
     ContactsCompletionView actvName;
     @BindView(R.id.btn_back)
     Button btnBack;
-    auto.Person[] people = new Person[0];
+    Person[] people = new Person[0];
     ArrayAdapter<Person> adapter;
     @BindView(R.id.edt_number)
     EditText edtNumber;
@@ -125,11 +129,12 @@ public class AddFromContactsActivity extends AppCompatActivity implements TokenC
         if (actvName.getText().toString().isEmpty() && edtNumber.getText().toString().isEmpty()) {
             Toast.makeText(this, "Please Enter Fields", Toast.LENGTH_SHORT).show();
         } else {
-            details.setName(actvName.getText().toString());
-            details.setNumber(edtNumber.getText().toString());
-            dataBaseHandler.savedetails(details);
-            Toast.makeText(this, "Successfully saved", Toast.LENGTH_SHORT).show();
-            //startActivity(new Intent(AddFromContactsActivity.this, EmergencyContactsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+            SharedPreferences sharedPreferences=getSharedPreferences("userinfo",0);
+            ContentValues values = new ContentValues();
+            values.put(DataBaseHandler.KEY_NAME, actvName.getText().toString());
+            values.put(DataBaseHandler.KEY_NUMBER, edtNumber.getText().toString());
+            Uri contactUri = getContentResolver().insert(ContactsProvider.CONTENT_URI, values);
+            Toast.makeText(this, "Created Contact " + actvName.getText().toString(), Toast.LENGTH_LONG).show();
         }
     }
     private void clearTheFields()
@@ -155,7 +160,7 @@ public class AddFromContactsActivity extends AppCompatActivity implements TokenC
         Person[] persons = new Person[0];
 
         Cursor phones = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ECLAIR) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
             phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
         }
 

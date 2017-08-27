@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import com.tutorialandroid.selfsecurity.R;
+import com.tutorialandroid.selfsecurity.SecurityApplication;
+import com.tutorialandroid.selfsecurity.model.Message;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,5 +36,10 @@ public class WelcomeActivity extends AppCompatActivity {
             Intent intent = new Intent(WelcomeActivity.this, RegisterActivity.class);
             startActivity(intent);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

@@ -1,6 +1,7 @@
 package com.tutorialandroid.selfsecurity.activitys;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnSettings;
     @BindView(R.id.btn_exit)
     Button btnExit;
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
             toolbar.setTitle(R.string.main_title);
             toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         }
+        sharedPreferences=getSharedPreferences("userinfo",MODE_PRIVATE);
+        SharedPreferences.Editor edit=sharedPreferences.edit();
+        edit.putString("alerttime", "0");
+        edit.putString("alertmessage", "");
+        edit.commit();
     }
     @OnClick({R.id.btn_personal_info,R.id.btn_emergency_contacts,R.id.btn_panic,R.id.btn_first_aid_instructions,
             R.id.btn_settings,R.id.btn_exit})
