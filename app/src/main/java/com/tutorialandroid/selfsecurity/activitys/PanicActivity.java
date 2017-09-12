@@ -12,7 +12,9 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -42,6 +44,8 @@ public class PanicActivity extends AppCompatActivity implements LocationListener
     private LocationManager locationManager;
     private String locationProvider;
     private String address;
+    private static final int PERMISSION_REQUEST_CODE = 1;
+    private static final int MY_PERMISSION_SMS_REQUEST_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,28 +60,33 @@ public class PanicActivity extends AppCompatActivity implements LocationListener
         //define the location manager criteria
         Criteria criteria = new Criteria();
 
-        locationProvider = locationManager.getBestProvider(criteria, false);
-        locationManager.requestLocationUpdates(locationProvider, 400, 1, this);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+        } else {
+            locationProvider = locationManager.getBestProvider(criteria, false);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
+            Location location = locationManager.getLastKnownLocation(locationProvider);
+
+
+            //initialize the location
+            if (location != null) {
+
+                onLocationChanged(location);
+            }
         }
-        Location location = locationManager.getLastKnownLocation(locationProvider);
-
-
-        //initialize the location
-        if (location != null) {
-
-            onLocationChanged(location);
-        }
-
     }
 
     @OnClick({R.id.btn_back, R.id.btn_red_panic, R.id.btn_panic})
@@ -87,7 +96,18 @@ public class PanicActivity extends AppCompatActivity implements LocationListener
                 finish();
                 break;
             case R.id.btn_red_panic:
-                sendSms();
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.SEND_SMS)) {
+
+                    } else {
+                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, MY_PERMISSION_SMS_REQUEST_CODE);
+                    }
+                } else {
+                    sendSms();
+                }
+
+
                 break;
             case R.id.btn_panic:
                 sendSms();
@@ -100,10 +120,25 @@ public class PanicActivity extends AppCompatActivity implements LocationListener
     private void sendSms() {
         if (btnRedPanic.getText().toString().equalsIgnoreCase(getString(R.string.start))) {
             mediaPlayer.start();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for Activity#requestPermissions for more details.
+                    return;
+                }
+            }
+            locationManager.requestLocationUpdates(locationProvider, 400, 1, this);
             btnRedPanic.setText(getString(R.string.stop));
+            ((SecurityApplication) getApplication()).setAddress(address);
             ((SecurityApplication) getApplication()).startTimer();
         } else {
             mediaPlayer.stop();
+            locationManager.removeUpdates(this);
             btnRedPanic.setText(getString(R.string.start));
             ((SecurityApplication) getApplication()).stopTimer();
         }
@@ -127,7 +162,7 @@ public class PanicActivity extends AppCompatActivity implements LocationListener
         {
             address=latitude+","+longitude;
         }
-        Toast.makeText(getBaseContext(), address, Toast.LENGTH_LONG).show();
+         Toast.makeText(getBaseContext(), address, Toast.LENGTH_LONG).show();
 
     }
 
