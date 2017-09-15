@@ -112,7 +112,7 @@ public class PanicActivity extends AppCompatActivity implements LocationListener
             case R.id.btn_panic:
                 sendSms();
                 break;
-            default:
+            default: 
                 break;
         }
     }
