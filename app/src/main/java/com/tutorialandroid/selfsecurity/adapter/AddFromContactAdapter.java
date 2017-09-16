@@ -1,6 +1,7 @@
 package com.tutorialandroid.selfsecurity.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,49 +17,43 @@ import java.util.ArrayList;
  * Created by vijayalaxmi on 05/27/2017.
  */
 
-public class AddFromContactAdapter extends BaseAdapter {
-    private ArrayList<ContactDetails> arrayList;
-    private Context context;
-    private LayoutInflater inflater;
-    public AddFromContactAdapter(Context context,ArrayList<ContactDetails> arrayList){
-        this.context=context;
+public class AddFromContactAdapter extends RecyclerView.Adapter<AddFromContactAdapter.ViewHolder>{
+private Context mContext;
+private ArrayList<ContactDetails> arrayList;
+private LayoutInflater inflater;
+
+public AddFromContactAdapter(Context context,ArrayList<ContactDetails> arrayList){
+        this.mContext=context;
         this.arrayList=arrayList;
-        this.inflater=LayoutInflater.from(context);
-    }
-    @Override
-    public int getCount() {
-        return arrayList.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return arrayList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null){
-            holder=new ViewHolder();
-            convertView=inflater.inflate(R.layout.itemview,null);
-            holder.txtName=(TextView)convertView.findViewById(R.id.txt_item_name);
-            holder.txtNumber=(TextView)convertView.findViewById(R.id.txt_item_number);
-            holder.txtNumber.setVisibility(View.GONE);
-            convertView.setTag(holder);
-        }else {
-            holder=(ViewHolder)convertView.getTag();
+        inflater=LayoutInflater.from(mContext);
         }
-        holder.txtName.setText(arrayList.get(position).getName() +"\n" +arrayList.get(position).getNumber());
-       // holder.txtNumber.setText(arrayList.get(position).getNumber());
-        return convertView;
-    }
-    public class ViewHolder{
-        TextView txtName;
-        TextView txtNumber;
+@Override
+public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view=inflater.inflate(R.layout.contact_itemview,parent,false);
+        ViewHolder holder=new ViewHolder(view);
+
+        return holder;
+        }
+
+@Override
+public void onBindViewHolder(ViewHolder holder, int position) {
+        ContactDetails details=arrayList.get(position);
+        holder.txtName.setText(details.getName());
+        holder.txtNumber.setText(details.getNumber());
+        }
+
+@Override
+public int getItemCount() {
+        return arrayList.size();
+        }
+
+public class ViewHolder extends RecyclerView.ViewHolder {
+    TextView txtName,txtNumber;
+    public ViewHolder(View itemView) {
+        super(itemView);
+        txtName=(TextView)itemView.findViewById(R.id.txt_item_name);
+        txtNumber=(TextView)itemView.findViewById(R.id.txt_item_number);
     }
 }
+}
+

@@ -36,7 +36,8 @@ public class MessageSettingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
         edtMessage.setText(sharedPreferences.getString("alertmessage", ""));
-        edtMessage.setEnabled(false);
+        if(!TextUtils.isEmpty(edtMessage.getText().toString()))
+        {edtMessage.setEnabled(false);}
     }
 
     @OnClick({R.id.btn_back, R.id.btn_save, R.id.btn_edit})

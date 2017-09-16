@@ -1,9 +1,11 @@
 package com.tutorialandroid.selfsecurity.model;
 
+import java.io.Serializable;
+
 /**
  * Created by VenkatPc on 5/25/2017.
  */
-public class ContactDetails {
+public class ContactDetails implements Serializable{
     private String name;
     private String number;
     private int id;

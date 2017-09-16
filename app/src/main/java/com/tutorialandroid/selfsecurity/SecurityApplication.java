@@ -57,13 +57,17 @@ public class SecurityApplication extends Application {
             public void run() {
                 int lastItem = 0;
                 ArrayList<Message> list = getMessageDetail(getApplicationContext());
-                if (list != null) {
+                if (list != null&&list.size()>0) {
                     lastItem = getMessageDetail(getApplicationContext()).size() - 1;
 
                     sendToAllContacts(getContacts(getApplicationContext()), getMessageDetail(getApplicationContext()).get(lastItem).getMessage());
                    // Toast.makeText(getApplicationContext(),getMessageDetail(getApplicationContext()).get(lastItem).getMessage(),Toast.LENGTH_SHORT).show();
 
                     handler.postDelayed(runnable, 60000 * Integer.parseInt(getMessageDetail(getApplicationContext()).get(lastItem).getTime()));
+                }
+                else
+                {
+                  Toast.makeText(getApplicationContext(),"Please set the Security message and time",Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -87,15 +91,15 @@ public class SecurityApplication extends Application {
 
     public void startTimer() {
         runnable.run();
-        int lastItem = 0;
+       /* int lastItem = 0;
         ArrayList<Message> list = getMessageDetail(getApplicationContext());
-        if (list != null) {
+        if (list != null&&list.size()>0) {
             lastItem = getMessageDetail(getApplicationContext()).size() - 1;
 
             handler.postDelayed(runnable, Integer.parseInt(getMessageDetail(getApplicationContext()).get(lastItem).getTime()) * 60000);
         } else {
             Toast.makeText(getApplicationContext(), "Please set the alert Message and time", Toast.LENGTH_LONG).show();
-        }
+        }*/
     }
 
     public void stopTimer() {

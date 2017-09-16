@@ -3,6 +3,7 @@ package com.tutorialandroid.selfsecurity.activitys;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
@@ -44,6 +45,7 @@ public class PanicActivity extends AppCompatActivity implements LocationListener
     private LocationManager locationManager;
     private String locationProvider;
     private String address;
+    private SharedPreferences sharedPreferences;
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final int MY_PERMISSION_SMS_REQUEST_CODE = 2;
 
@@ -112,13 +114,18 @@ public class PanicActivity extends AppCompatActivity implements LocationListener
             case R.id.btn_panic:
                 sendSms();
                 break;
-            default: 
+            default:
                 break;
         }
     }
 
     private void sendSms() {
-        if (btnRedPanic.getText().toString().equalsIgnoreCase(getString(R.string.start))) {
+
+
+
+        sharedPreferences=getSharedPreferences("userinfo",MODE_PRIVATE);
+        if(sharedPreferences.getBoolean("alertswitch",false))
+        { if (btnRedPanic.getText().toString().equalsIgnoreCase(getString(R.string.start))) {
             mediaPlayer.start();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -141,6 +148,10 @@ public class PanicActivity extends AppCompatActivity implements LocationListener
             locationManager.removeUpdates(this);
             btnRedPanic.setText(getString(R.string.start));
             ((SecurityApplication) getApplication()).stopTimer();
+        }}
+        else
+        {
+            Toast.makeText(getApplicationContext(),"Please On the Security Setting Switch",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -162,8 +173,7 @@ public class PanicActivity extends AppCompatActivity implements LocationListener
         {
             address=latitude+","+longitude;
         }
-         Toast.makeText(getBaseContext(), address, Toast.LENGTH_LONG).show();
-
+        
     }
 
     private String getAddress(double latitude, double longitude) {

@@ -8,4 +8,6 @@
     <color name="bacscreen">#008080</color>
     <color name="navy">#000080</color>
     <color name="black">#000000</color>
+    <color name="enabled_color">#000000</color>
+    <color name="disabled_color">#000000</color>
 </resources>
