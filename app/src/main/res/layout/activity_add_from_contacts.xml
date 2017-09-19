@@ -50,14 +50,14 @@
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
-                    <auto.ContactsCompletionView
+                    <EditText
                         android:id="@+id/actv_name"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:layout_weight="0.3"
                         android:background="@drawable/rounded_gray_edittext"
                         android:paddingLeft="5dp"
-                        android:text=""
+                        android:focusable="false"
                         android:textColor="@color/black" />
                 </LinearLayout>
 
@@ -86,6 +86,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:layout_weight="0.3"
+                            android:focusable="false"
                             android:background="@drawable/rounded_gray_edittext"
                             android:paddingLeft="5dp"
                             android:text=""

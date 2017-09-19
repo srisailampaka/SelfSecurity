@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.BaseColumns;
 import android.provider.UserDictionary;
@@ -44,7 +45,8 @@ public class SecurityApplication extends Application {
     private Handler handler;
     private Runnable runnable;
     private String address;
-
+    MyCountDownTimer myCountDownTimer;
+    boolean starttimer=false;
 
     @Override
     public void onCreate() {
@@ -90,20 +92,28 @@ public class SecurityApplication extends Application {
     }
 
     public void startTimer() {
-        runnable.run();
-       /* int lastItem = 0;
+        int lastItem = 0;
         ArrayList<Message> list = getMessageDetail(getApplicationContext());
         if (list != null&&list.size()>0) {
             lastItem = getMessageDetail(getApplicationContext()).size() - 1;
-
-            handler.postDelayed(runnable, Integer.parseInt(getMessageDetail(getApplicationContext()).get(lastItem).getTime()) * 60000);
+            if (!starttimer) {
+                starttimer=true;
+                sendToAllContacts(getContacts(getApplicationContext()), getMessageDetail(getApplicationContext()).get(lastItem).getMessage());
+                myCountDownTimer = new MyCountDownTimer(Integer.parseInt(getMessageDetail(getApplicationContext()).get(lastItem).getTime()) * 60000, 1000);
+                myCountDownTimer.start();
+            }
         } else {
             Toast.makeText(getApplicationContext(), "Please set the alert Message and time", Toast.LENGTH_LONG).show();
-        }*/
+        }
+
     }
 
     public void stopTimer() {
-        handler.removeCallbacks(runnable);
+        if (myCountDownTimer != null) {
+            myCountDownTimer.cancel();
+            starttimer=false;
+            //myCountDownTimer=null;
+        }
     }
 
 
@@ -216,4 +226,35 @@ public class SecurityApplication extends Application {
         sms.sendTextMessage(phoneNumber, null, message + "Adress." + getAddress(), sentPI, deliveredPI);
     }
 
+
+    public class MyCountDownTimer extends CountDownTimer {
+
+        public MyCountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+
+            int progress = (int) (millisUntilFinished / 1000);
+            Log.d("timer......."+millisUntilFinished," ....time"+ String.valueOf(progress));
+
+        }
+
+        @Override
+        public void onFinish() {
+            int lastItem = 0;
+            ArrayList<Message> list = getMessageDetail(getApplicationContext());
+            if (list != null) {
+                lastItem = getMessageDetail(getApplicationContext()).size() - 1;
+                sendToAllContacts(getContacts(getApplicationContext()), getMessageDetail(getApplicationContext()).get(lastItem).getMessage());
+            }
+            myCountDownTimer.start();
+        }
+
+    }
+    public boolean getTimerStatus()
+    {
+        return starttimer;
+    }
 }

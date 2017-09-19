@@ -142,13 +142,31 @@ public class AddFromContactsActivity extends AppCompatActivity {
         if (actvName.getText().toString().isEmpty() && edtNumber.getText().toString().isEmpty()) {
             Toast.makeText(this, "Please Enter Fields", Toast.LENGTH_SHORT).show();
         } else {
-            SharedPreferences sharedPreferences=getSharedPreferences("userinfo",0);
-            ContentValues values = new ContentValues();
-            values.put(DataBaseHandler.KEY_NAME, actvName.getText().toString());
-            values.put(DataBaseHandler.KEY_NUMBER, edtNumber.getText().toString());
-            Uri contactUri = getContentResolver().insert(ContactsProvider.CONTENT_URI, values);
-            Toast.makeText(this, "Created Contact " + actvName.getText().toString(), Toast.LENGTH_LONG).show();
-            finish();
+            Cursor cursor = getContentResolver().query(ContactsProvider.CONTENT_URI, null, null, null, "name");
+            boolean phoneNumber = false;
+            if (cursor != null){
+                if (cursor.moveToFirst()) {
+                    do {
+                        String getPhonenumber = cursor.getString(cursor.getColumnIndex(DataBaseHandler.KEY_NUMBER));
+                        if (getPhonenumber.equals(edtNumber.getText().toString())) {
+                            phoneNumber = true;
+                            break;
+                        }
+                    } while (cursor.moveToNext());
+                }
+                finish();
+            }
+
+
+            if (!phoneNumber) {
+                SharedPreferences sharedPreferences = getSharedPreferences("userinfo", 0);
+                ContentValues values = new ContentValues();
+                values.put(DataBaseHandler.KEY_NAME, actvName.getText().toString());
+                values.put(DataBaseHandler.KEY_NUMBER, edtNumber.getText().toString());
+                Uri contactUri = getContentResolver().insert(ContactsProvider.CONTENT_URI, values);
+                Toast.makeText(this, "Created Contact " + actvName.getText().toString(), Toast.LENGTH_LONG).show();
+                finish();
+            }
         }
     }
     private void clearTheFields()

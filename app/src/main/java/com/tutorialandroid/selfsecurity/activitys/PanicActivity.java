@@ -26,6 +26,7 @@ import com.tutorialandroid.selfsecurity.Connectivity;
 import com.tutorialandroid.selfsecurity.R;
 import com.tutorialandroid.selfsecurity.SecurityApplication;
 
+import java.sql.DriverManager;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,7 +55,7 @@ public class PanicActivity extends AppCompatActivity implements LocationListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_panic);
         ButterKnife.bind(this);
-        mediaPlayer = MediaPlayer.create(this, R.raw.demonstrative);
+
         //get the location manager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -88,6 +89,12 @@ public class PanicActivity extends AppCompatActivity implements LocationListener
 
                 onLocationChanged(location);
             }
+
+            if (((SecurityApplication) getApplication()).getTimerStatus()) {
+                btnRedPanic.setText(getString(R.string.stop));
+            } else {
+                btnRedPanic.setText(getString(R.string.start));
+            }
         }
     }
 
@@ -120,45 +127,45 @@ public class PanicActivity extends AppCompatActivity implements LocationListener
     }
 
     private void sendSms() {
-
-
-
-        sharedPreferences=getSharedPreferences("userinfo",MODE_PRIVATE);
-        if(sharedPreferences.getBoolean("alertswitch",false))
-        { if (btnRedPanic.getText().toString().equalsIgnoreCase(getString(R.string.start))) {
-            mediaPlayer.start();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for Activity#requestPermissions for more details.
-                    return;
+        sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        if (sharedPreferences.getBoolean("alertswitch", false)) {
+            if (btnRedPanic.getText().toString().equalsIgnoreCase(getString(R.string.start))) {
+                mediaPlayer = MediaPlayer.create(this, R.raw.alarm);
+                mediaPlayer.start();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for Activity#requestPermissions for more details.
+                        return;
+                    }
                 }
+                locationManager.requestLocationUpdates(locationProvider, 400, 1, this);
+                btnRedPanic.setText(getString(R.string.stop));
+                ((SecurityApplication) getApplication()).setAddress(address);
+                ((SecurityApplication) getApplication()).startTimer();
+            } else {
+                if (mediaPlayer != null) {
+                    mediaPlayer.stop();
+                }
+                locationManager.removeUpdates(this);
+                btnRedPanic.setText(getString(R.string.start));
+                ((SecurityApplication) getApplication()).stopTimer();
             }
-            locationManager.requestLocationUpdates(locationProvider, 400, 1, this);
-            btnRedPanic.setText(getString(R.string.stop));
-            ((SecurityApplication) getApplication()).setAddress(address);
-            ((SecurityApplication) getApplication()).startTimer();
         } else {
-            mediaPlayer.stop();
-            locationManager.removeUpdates(this);
-            btnRedPanic.setText(getString(R.string.start));
-            ((SecurityApplication) getApplication()).stopTimer();
-        }}
-        else
-        {
-            Toast.makeText(getApplicationContext(),"Please On the Security Setting Switch",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Please On the Security Setting Switch", Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mediaPlayer.stop();
+        if (mediaPlayer != null)
+            mediaPlayer.stop();
     }
 
     @Override
@@ -168,12 +175,10 @@ public class PanicActivity extends AppCompatActivity implements LocationListener
         String msg = "New Latitude: " + latitude + "New Longitude: " + longitude;
         if (Connectivity.isNetworkAvailable(getApplicationContext())) {
             address = getAddress(latitude, longitude);
+        } else {
+            address = latitude + "," + longitude;
         }
-        else
-        {
-            address=latitude+","+longitude;
-        }
-        
+
     }
 
     private String getAddress(double latitude, double longitude) {
