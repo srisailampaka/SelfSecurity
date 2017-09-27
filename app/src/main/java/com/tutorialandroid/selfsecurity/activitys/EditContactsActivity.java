@@ -108,6 +108,7 @@ public class EditContactsActivity extends AppCompatActivity implements LoaderMan
                 for (CheckBox c : ContactsCursorAdapter.checkArray) {
                     {
                         c.setChecked(false);
+                        finish();
                     }
                 }
                 break;

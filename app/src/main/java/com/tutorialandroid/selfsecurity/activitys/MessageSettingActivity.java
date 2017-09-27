@@ -57,6 +57,7 @@ public class MessageSettingActivity extends AppCompatActivity {
                     edit.commit();
                     ((SecurityApplication) getApplication()).saveIntialTimerMessageDetails();
                     Toast.makeText(getApplicationContext(), "alert message are saved successfully", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
                 break;
             default:

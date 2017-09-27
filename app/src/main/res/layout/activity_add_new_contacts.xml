@@ -95,6 +95,7 @@
                             android:background="@drawable/rounded_gray_edittext"
                             android:paddingLeft="5dp"
                             android:text=""
+                            android:inputType="phone"
                             android:textColor="@color/black" />
                     </LinearLayout>
 

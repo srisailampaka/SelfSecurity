@@ -54,6 +54,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+
 //    public void savedetails(ContactDetails contactDetails) {
 //
 //        SQLiteDatabase db = this.getWritableDatabase();
@@ -86,6 +87,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 //
 //    }
 //
+
    public void deleteRec(String ids) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_CONTACTS_NAME, KEY_ID + " = ? ", new String[]{ids});

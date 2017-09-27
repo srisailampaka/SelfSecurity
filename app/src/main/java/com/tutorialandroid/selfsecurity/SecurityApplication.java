@@ -1,5 +1,6 @@
 package com.tutorialandroid.selfsecurity;
 
+import android.*;
 import android.app.Activity;
 import android.app.Application;
 import android.app.PendingIntent;
@@ -10,16 +11,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.BaseColumns;
 import android.provider.UserDictionary;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.tutorialandroid.selfsecurity.activitys.GPSTrack;
 import com.tutorialandroid.selfsecurity.database.ContactsProvider;
 import com.tutorialandroid.selfsecurity.database.DataBaseHandler;
 import com.tutorialandroid.selfsecurity.model.ContactDetails;
@@ -27,6 +34,8 @@ import com.tutorialandroid.selfsecurity.model.Message;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by srisailampaka on 24/08/17.
@@ -47,32 +56,35 @@ public class SecurityApplication extends Application {
     private String address;
     MyCountDownTimer myCountDownTimer;
     boolean starttimer=false;
+    private double latitude, longitude;
+    private GPSTrack track;
+    private static final int REQUEST_LOCATION = 2;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         appInstance = this;
-        handler = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                int lastItem = 0;
-                ArrayList<Message> list = getMessageDetail(getApplicationContext());
-                if (list != null&&list.size()>0) {
-                    lastItem = getMessageDetail(getApplicationContext()).size() - 1;
-
-                    sendToAllContacts(getContacts(getApplicationContext()), getMessageDetail(getApplicationContext()).get(lastItem).getMessage());
-                   // Toast.makeText(getApplicationContext(),getMessageDetail(getApplicationContext()).get(lastItem).getMessage(),Toast.LENGTH_SHORT).show();
-
-                    handler.postDelayed(runnable, 60000 * Integer.parseInt(getMessageDetail(getApplicationContext()).get(lastItem).getTime()));
-                }
-                else
-                {
-                  Toast.makeText(getApplicationContext(),"Please set the Security message and time",Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
+//        handler = new Handler();
+//        runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                int lastItem = 0;
+//                ArrayList<Message> list = getMessageDetail(getApplicationContext());
+//                if (list != null&&list.size()>0) {
+//                    lastItem = getMessageDetail(getApplicationContext()).size() - 1;
+//
+//                    sendToAllContacts(getContacts(getApplicationContext()), getMessageDetail(getApplicationContext()).get(lastItem).getMessage());
+//                   // Toast.makeText(getApplicationContext(),getMessageDetail(getApplicationContext()).get(lastItem).getMessage(),Toast.LENGTH_SHORT).show();
+//
+//                    handler.postDelayed(runnable, 60000 * Integer.parseInt(getMessageDetail(getApplicationContext()).get(lastItem).getTime()));
+//                }
+//                else
+//                {
+//                  Toast.makeText(getApplicationContext(),"Please set the Security message and time",Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        };
 
 
     }
@@ -88,6 +100,7 @@ public class SecurityApplication extends Application {
     private void sendToAllContacts(ArrayList<ContactDetails> contactList, String message) {
         for (int i = 0; i < contactList.size(); i++) {
             sendSMS(getApplicationContext(), contactList.get(i).getNumber(), message);
+            Log.w(message,contactList.get(i).getNumber());
         }
     }
 
@@ -139,7 +152,7 @@ public class SecurityApplication extends Application {
                 contactDetails.setName(cursor.getString(cursor.getColumnIndex(DataBaseHandler.KEY_NAME)));
                 contactDetails.setNumber(cursor.getString(cursor.getColumnIndex(DataBaseHandler.KEY_NUMBER)));
                 detailses.add(contactDetails);
-
+                Log.w("contact",cursor.getString(cursor.getColumnIndex(DataBaseHandler.KEY_NUMBER)));
                 //sendSMS(context, cursor.getString(2), message);
             } while (cursor.moveToNext());
         }
@@ -223,7 +236,7 @@ public class SecurityApplication extends Application {
             }
         }, new IntentFilter(DELIVERED));
         SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(phoneNumber, null, message + "Adress." + getAddress(), sentPI, deliveredPI);
+        sms.sendTextMessage(phoneNumber, null, message + "\n Adress." + getAddress(), sentPI, deliveredPI);
     }
 
 
@@ -243,6 +256,29 @@ public class SecurityApplication extends Application {
 
         @Override
         public void onFinish() {
+
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Check Permissions Now
+                ActivityCompat.requestPermissions((Activity) getApplicationContext(),
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQUEST_LOCATION);
+            } else {
+                track = new GPSTrack(getApplicationContext());
+                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+                    if (track.canGetLocation()) {
+                        latitude = track.getLatitude();
+                        longitude = track.getLongitude();
+                        address=getAddress(latitude,longitude);
+                        Log.w("onresumeapp",latitude+"llll"+longitude+"");
+                    }
+                } else {
+                  //  track.showSettingsAlert();
+                }
+            }
+
             int lastItem = 0;
             ArrayList<Message> list = getMessageDetail(getApplicationContext());
             if (list != null) {
@@ -256,5 +292,29 @@ public class SecurityApplication extends Application {
     public boolean getTimerStatus()
     {
         return starttimer;
+    }
+    private String getAddress(double latitude, double longitude) {
+        Geocoder geocoder;
+        List<Address> addresses;
+        String address = "";
+        String city = "";
+        String state = "";
+        String country = "";
+        try {
+            geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+            addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            city = addresses.get(0).getLocality();
+            state = addresses.get(0).getAdminArea();
+            country = addresses.get(0).getCountryName();
+            String postalCode = addresses.get(0).getPostalCode();
+            String knownName = addresses.get(0).getFeatureName();
+        } catch (Exception e) {
+
+        }
+        if (!Connectivity.isNetworkAvailable(getApplicationContext())){
+            return latitude+","+longitude;
+        }else{
+        return address + "," + city + "," + state + "," + country;}
     }
 }

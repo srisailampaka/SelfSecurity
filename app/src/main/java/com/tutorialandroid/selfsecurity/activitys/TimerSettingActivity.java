@@ -62,6 +62,7 @@ public class TimerSettingActivity extends AppCompatActivity {
                 edit.commit();
                 ((SecurityApplication) getApplication()).saveIntialTimerMessageDetails();
                 Toast.makeText(this, "Setting time " + npValues + "M", Toast.LENGTH_SHORT).show();
+                finish();
                 break;
             default:
                 break;

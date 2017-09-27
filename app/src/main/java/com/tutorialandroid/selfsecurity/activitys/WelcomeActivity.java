@@ -2,15 +2,11 @@ package com.tutorialandroid.selfsecurity.activitys;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
 import com.tutorialandroid.selfsecurity.R;
-import com.tutorialandroid.selfsecurity.SecurityApplication;
-import com.tutorialandroid.selfsecurity.model.Message;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

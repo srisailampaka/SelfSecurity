@@ -64,19 +64,21 @@ public class ContactsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
         ButterKnife.bind(this);
-        mGestureDetector = new GestureDetector(ContactsActivity.this, simpleOnGestureListener);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSION_REQUEST_CONTACT);
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else {
            // adapter();
             arrayList=getContactDetails();
+            mGestureDetector = new GestureDetector(ContactsActivity.this, simpleOnGestureListener);
+            mLayoutManager = new LinearLayoutManager(ContactsActivity.this);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            adapter = new AddFromContactAdapter(ContactsActivity.this,arrayList);
+            mRecyclerView.setAdapter(adapter);
+            mRecyclerView.addOnItemTouchListener(onItemTouchListener);
         }
-        mLayoutManager = new LinearLayoutManager(ContactsActivity.this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        adapter = new AddFromContactAdapter(ContactsActivity.this,arrayList);
-        mRecyclerView.setAdapter(adapter);
-        mRecyclerView.addOnItemTouchListener(onItemTouchListener);
+
     }
     private RecyclerView.OnItemTouchListener onItemTouchListener=new RecyclerView.OnItemTouchListener() {
         @Override
@@ -118,6 +120,12 @@ public class ContactsActivity extends AppCompatActivity {
                 // Permission is granted
                // adapter();
                 arrayList=getContactDetails();
+                mGestureDetector = new GestureDetector(ContactsActivity.this, simpleOnGestureListener);
+                mLayoutManager = new LinearLayoutManager(ContactsActivity.this);
+                mRecyclerView.setLayoutManager(mLayoutManager);
+                adapter = new AddFromContactAdapter(ContactsActivity.this,arrayList);
+                mRecyclerView.setAdapter(adapter);
+                mRecyclerView.addOnItemTouchListener(onItemTouchListener);
             } else {
                 Toast.makeText(this, "Until you grant the permission, we canot display the names", Toast.LENGTH_SHORT).show();
             }
