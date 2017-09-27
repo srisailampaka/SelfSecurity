@@ -149,7 +149,7 @@ public class PanicActivity extends AppCompatActivity{
         if (!Connectivity.isNetworkAvailable(getApplicationContext())){
             return latitude+","+longitude;
         }else{
-            return address + "," + city + "," + state + "," + country;}
+            return address ;}
     }
 
     @Override
