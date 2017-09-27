@@ -236,7 +236,7 @@ public class SecurityApplication extends Application {
             }
         }, new IntentFilter(DELIVERED));
         SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(phoneNumber, null, message + "\n Adress." + getAddress(), sentPI, deliveredPI);
+        sms.sendTextMessage(phoneNumber, null, message + "\n Address : " + getAddress(), sentPI, deliveredPI);
     }
 
 
