@@ -37,10 +37,10 @@ public class TimerSettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer_setting);
         ButterKnife.bind(this);
-        sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("userinfo", 0);
         numberPicker.setMinValue(1);
         numberPicker.setMaxValue(60);
-        numberPicker.setValue(Integer.valueOf(sharedPreferences.getString("alerttime", "0")));
+        numberPicker.setValue(Integer.valueOf(sharedPreferences.getString("alerttime", "")));
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -56,7 +56,7 @@ public class TimerSettingActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.btn_save:
-                sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+                sharedPreferences = getSharedPreferences("userinfo", 0);
                 SharedPreferences.Editor edit = sharedPreferences.edit();
                 edit.putString("alerttime", String.valueOf(numberPicker.getValue()));
                 edit.commit();

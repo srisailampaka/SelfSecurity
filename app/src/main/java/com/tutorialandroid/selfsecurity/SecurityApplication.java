@@ -134,8 +134,8 @@ public class SecurityApplication extends Application {
 
         ContentValues values = new ContentValues();
         SharedPreferences sharedPreferences = getSharedPreferences("userinfo", 0);
-        values.put(DataBaseHandler.KEY_TIME, sharedPreferences.getString("alerttime", ".."));
-        values.put(DataBaseHandler.KEY_MESSAGE, sharedPreferences.getString("alertmessage", ".."));
+        values.put(DataBaseHandler.KEY_TIME, sharedPreferences.getString("alerttime", ""));
+        values.put(DataBaseHandler.KEY_MESSAGE, sharedPreferences.getString("alertmessage", ""));
         Uri uri = getContentResolver().insert(ContactsProvider.MESSAGE_URI, values);
 
     }
@@ -315,6 +315,6 @@ public class SecurityApplication extends Application {
         if (!Connectivity.isNetworkAvailable(getApplicationContext())){
             return latitude+","+longitude;
         }else{
-        return address + "," + city + "," + state + "," + country;}
+        return address;}
     }
 }

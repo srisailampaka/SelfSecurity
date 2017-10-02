@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bacscreen"
+    android:background="@color/yellow"
     tools:context="com.tutorialandroid.selfsecurity.activitys.WelcomeActivity">
 
 <TextView
@@ -13,7 +13,7 @@
     android:layout_centerInParent="true"
     android:gravity="center"
     android:textSize="20dp"
-    android:textColor="@color/white"
+    android:textColor="@color/black"
     android:text="@string/welcome_title"/>
     <Button
         android:id="@+id/btn_start"

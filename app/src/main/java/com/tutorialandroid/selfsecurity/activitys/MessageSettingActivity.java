@@ -34,7 +34,7 @@ public class MessageSettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_setting);
         ButterKnife.bind(this);
-        sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("userinfo", 0);
         edtMessage.setText(sharedPreferences.getString("alertmessage", ""));
         if(!TextUtils.isEmpty(edtMessage.getText().toString()))
         {edtMessage.setEnabled(false);}
@@ -51,7 +51,7 @@ public class MessageSettingActivity extends AppCompatActivity {
                 break;
             case R.id.btn_save:
                 if (!TextUtils.isEmpty(edtMessage.getText().toString().trim())) {
-                    sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+                    sharedPreferences = getSharedPreferences("userinfo", 0);
                     SharedPreferences.Editor edit = sharedPreferences.edit();
                     edit.putString("alertmessage", edtMessage.getText().toString());
                     edit.commit();
