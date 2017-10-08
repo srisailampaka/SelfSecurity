@@ -12,6 +12,7 @@
         android:name="com.tutorialandroid.selfsecurity.WRITE_DATABASE"
         android:protectionLevel="normal" />
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -48,10 +49,13 @@
         <activity android:name=".activitys.EditContactsActivity" />
         <activity android:name=".activitys.PanicActivity" />
         <activity android:name=".activitys.FirstAidInfoActivity" />
-        <activity android:name=".activitys.SettingActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activitys.SettingActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activitys.MessageSettingActivity" />
+        <activity android:name=".activitys.EmerencyCallActivity" />
         <activity android:name=".activitys.TimerSettingActivity">
+
 
             <!--
                <intent-filter>

@@ -1,11 +1,12 @@
 <resources>
-    <string name="app_name">Safe App</string>
+    <string name="app_name">SelfSecurity</string>
 
-    <string name="welcome_title">Welcome \n To \n Women Safe</string>
+    <string name="welcome_title">Welcome \n To \n Safe App</string>
     <string name="btn_started">Get Started</string>
     <string name="main_title">Main Menu</string>
     <string name="personal_information">Personal Information</string>
     <string name="emergency_contacts">Emergency Contacts</string>
+    <string name="emergency_call">Emergency Call</string>
     <string name="panic">Panic</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
@@ -48,6 +49,7 @@ of blood.\n\n</string>
     <string name="occupation">Occupation</string>
     <string name="save">Save</string>
     <string name="back">Back</string>
+    <string name="setEmgNumber">Set Emergency Number</string>
     <string name="next">Next</string>
     <string name="edit">Edit</string>
     <string name="add_from_contacts">Add From Contacts</string>

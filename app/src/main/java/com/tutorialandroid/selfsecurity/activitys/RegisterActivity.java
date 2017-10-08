@@ -79,4 +79,10 @@ public class RegisterActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
 }

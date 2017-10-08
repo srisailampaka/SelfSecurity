@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.tutorialandroid.selfsecurity.activitys.PanicActivity">
+
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/btn_background"
+        android:text="@string/back"
+        android:textColor="@color/white" />
+    <Button
+        android:id="@+id/btn_set_emg_number"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/btn_background"
+        android:text="@string/setEmgNumber"
+        android:textColor="@color/white" />
+    <LinearLayout
+        android:id="@+id/lnlr_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_below="@+id/btn_back"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/edt_emg_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_gray_edittext"
+            android:padding="10dp"
+            android:inputType="phone"
+            android:hint="Enter Emergency Number"
+            />
+        <Button
+            android:id="@+id/btn_save_emg_number"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_background"
+            android:text="@string/save"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_emergency_call"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_centerInParent="true"
+        android:text="@string/emergency_call"
+        android:textSize="25sp"
+        android:background="@drawable/btn_red_background" />
+
+
+
+</RelativeLayout>

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools" 
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
-    android:background="@color/bacscreen"
+    android:background="@color/white"
     android:orientation="vertical"
 
     tools:context="com.tutorialandroid.selfsecurity.activitys.RegisterActivity">
@@ -29,7 +29,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:layout_weight="0.7"
             android:textSize="18sp"
             android:text="Name :"/>
@@ -43,7 +43,7 @@
             android:inputType="text"
             android:layout_weight="0.3"
             android:paddingLeft="5dp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/black"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,7 +53,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:layout_weight="0.7"
             android:textSize="18sp"
             android:text="Mobile No :"/>
@@ -67,7 +67,7 @@
             android:inputType="phone"
             android:layout_weight="0.3"
             android:paddingLeft="5dp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/black"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -78,7 +78,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:layout_weight="0.7"
             android:textSize="18sp"
             android:gravity="top"
@@ -97,7 +97,7 @@
             android:layout_weight="0.3"
             android:paddingLeft="5dp"
             android:lines="4"
-            android:textColor="@color/white"/>
+            android:textColor="@color/black"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -107,10 +107,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:layout_weight="0.7"
+            android:textColor="@color/black"
+            android:layout_weight="0.68"
             android:textSize="18sp"
-            android:text="Occupation :"/>
+            android:text="Occupation:"/>
 
         <EditText
             android:id="@+id/edt_occupation"
@@ -119,9 +119,9 @@
             android:background="@drawable/rounded_red_edittext"
             android:text=""
             android:inputType="text"
-            android:layout_weight="0.3"
+            android:layout_weight="0.32"
             android:paddingLeft="5dp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/black"/>
     </LinearLayout>
     </LinearLayout>
     <Button

@@ -40,7 +40,7 @@ public class TimerSettingActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("userinfo", 0);
         numberPicker.setMinValue(1);
         numberPicker.setMaxValue(60);
-        numberPicker.setValue(Integer.valueOf(sharedPreferences.getString("alerttime", "")));
+        numberPicker.setValue(Integer.valueOf(sharedPreferences.getString("alerttime", "0")));
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {

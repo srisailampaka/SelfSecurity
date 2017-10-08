@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnSettings;
     @BindView(R.id.btn_exit)
     Button btnExit;
+    @BindView(R.id.btn_emergency_call)
+    Button btnEmgCall;
     SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +42,14 @@ public class MainActivity extends AppCompatActivity {
             toolbar.setTitle(R.string.main_title);
             toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         }
-        sharedPreferences=getSharedPreferences("userinfo",MODE_PRIVATE);
-        SharedPreferences.Editor edit=sharedPreferences.edit();
-        edit.putString("alerttime", "0");
-        edit.putString("alertmessage", "");
-        edit.commit();
+//        sharedPreferences=getSharedPreferences("userinfo",MODE_PRIVATE);
+//        SharedPreferences.Editor edit=sharedPreferences.edit();
+//        edit.putString("alerttime", "0");
+//        edit.putString("alertmessage", "");
+//        edit.commit();
     }
     @OnClick({R.id.btn_personal_info,R.id.btn_emergency_contacts,R.id.btn_panic,R.id.btn_first_aid_instructions,
-            R.id.btn_settings,R.id.btn_exit})
+            R.id.btn_settings,R.id.btn_exit,R.id.btn_emergency_call})
     public void onClicl(View v){
         switch (v.getId()){
             case R.id.btn_personal_info:
@@ -58,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.btn_panic:
                 startActivity(new Intent(MainActivity.this,PanicActivity.class));
+                break;
+            case R.id.btn_emergency_call:
+                startActivity(new Intent(MainActivity.this,EmerencyCallActivity.class));
                 break;
             case R.id.btn_first_aid_instructions:
                 startActivity(new Intent(MainActivity.this,FirstAidInfoActivity.class));
