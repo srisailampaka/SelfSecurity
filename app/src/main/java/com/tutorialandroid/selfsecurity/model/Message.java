@@ -6,6 +6,7 @@ package com.tutorialandroid.selfsecurity.model;
 
 public class Message {
     private String message;
+    private String phoneNumber;
 
     public String getMessage() {
         return message;
@@ -24,4 +25,12 @@ public class Message {
     }
 
     private String time;
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }

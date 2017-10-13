@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.tutorialandroid.selfsecurity.R;
+import com.tutorialandroid.selfsecurity.SecurityApplication;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,6 +68,7 @@ public class EmerencyCallActivity extends AppCompatActivity {
             case R.id.btn_save_emg_number:
                 edit.putString("emgNumber", edtEmgNumber.getText().toString());
                 edit.commit();
+                ((SecurityApplication) getApplication()).saveIntialTimerMessageDetails(getApplicationContext());
                 lnlSave.setVisibility(View.GONE);
                 break;
 

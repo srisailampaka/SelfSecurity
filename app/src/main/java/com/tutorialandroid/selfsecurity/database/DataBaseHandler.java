@@ -35,7 +35,9 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     private static final String CREATE_MESSAGE_TABLE =
             " CREATE TABLE " + TABLE_MESSAGE_NAME + " (" +
                     KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    KEY_TIME + " TEXT ," + KEY_MESSAGE + " TEXT " + " )";
+                    KEY_TIME + " TEXT ," +
+                    KEY_MESSAGE + " TEXT ," +
+                    KEY_NUMBER + " TEXT " + " )";
 
     public DataBaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -138,12 +138,14 @@ public class SecurityApplication extends Application {
                 SharedPreferences sharedPreferences = getSharedPreferences("userinfo", 0);
                 values.put(DataBaseHandler.KEY_TIME, sharedPreferences.getString("alerttime", ""));
                 values.put(DataBaseHandler.KEY_MESSAGE, sharedPreferences.getString("alertmessage", ""));
+                values.put(DataBaseHandler.KEY_NUMBER, sharedPreferences.getString("emgNumber", ""));
                 int uri = getContentResolver().update(ContactsProvider.MESSAGE_URI, values,null,null);
             }else {
                 ContentValues values = new ContentValues();
                 SharedPreferences sharedPreferences = getSharedPreferences("userinfo", 0);
                 values.put(DataBaseHandler.KEY_TIME, sharedPreferences.getString("alerttime", ""));
                 values.put(DataBaseHandler.KEY_MESSAGE, sharedPreferences.getString("alertmessage", ""));
+                values.put(DataBaseHandler.KEY_NUMBER, sharedPreferences.getString("emgNumber", ""));
                 Uri uri = getContentResolver().insert(ContactsProvider.MESSAGE_URI, values);
             }
         }
@@ -182,8 +184,9 @@ public class SecurityApplication extends Application {
                 Message message = new Message();
                 message.setTime((cursor.getString(cursor.getColumnIndex(DataBaseHandler.KEY_TIME))));
                 message.setMessage(cursor.getString(cursor.getColumnIndex(DataBaseHandler.KEY_MESSAGE)));
+                message.setPhoneNumber(cursor.getString(cursor.getColumnIndex(DataBaseHandler.KEY_NUMBER)));
                 detailses.add(message);
-                //Log.w(".............",cursor.getString(cursor.getColumnIndex(DataBaseHandler.KEY_ID))+cursor.getString(cursor.getColumnIndex(DataBaseHandler.KEY_TIME)));
+                Log.w(".............",cursor.getString(cursor.getColumnIndex(DataBaseHandler.KEY_NUMBER))+cursor.getString(cursor.getColumnIndex(DataBaseHandler.KEY_TIME)));
             } while (cursor.moveToNext());
         }
         cursor.close();
