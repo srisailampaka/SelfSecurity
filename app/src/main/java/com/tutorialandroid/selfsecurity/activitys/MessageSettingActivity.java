@@ -55,7 +55,7 @@ public class MessageSettingActivity extends AppCompatActivity {
                     SharedPreferences.Editor edit = sharedPreferences.edit();
                     edit.putString("alertmessage", edtMessage.getText().toString());
                     edit.commit();
-                    ((SecurityApplication) getApplication()).saveIntialTimerMessageDetails();
+                    ((SecurityApplication) getApplication()).saveIntialTimerMessageDetails(getApplicationContext());
                     Toast.makeText(getApplicationContext(), "alert message are saved successfully", Toast.LENGTH_SHORT).show();
                     finish();
                 }

@@ -60,7 +60,7 @@ public class TimerSettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor edit = sharedPreferences.edit();
                 edit.putString("alerttime", String.valueOf(numberPicker.getValue()));
                 edit.commit();
-                ((SecurityApplication) getApplication()).saveIntialTimerMessageDetails();
+                ((SecurityApplication) getApplication()).saveIntialTimerMessageDetails(getApplicationContext());
                 Toast.makeText(this, "Setting time " + npValues + "M", Toast.LENGTH_SHORT).show();
                 finish();
                 break;

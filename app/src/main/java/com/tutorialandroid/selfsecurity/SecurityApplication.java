@@ -130,14 +130,23 @@ public class SecurityApplication extends Application {
     }
 
 
-    public void saveIntialTimerMessageDetails() {
-
-        ContentValues values = new ContentValues();
-        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", 0);
-        values.put(DataBaseHandler.KEY_TIME, sharedPreferences.getString("alerttime", ""));
-        values.put(DataBaseHandler.KEY_MESSAGE, sharedPreferences.getString("alertmessage", ""));
-        Uri uri = getContentResolver().insert(ContactsProvider.MESSAGE_URI, values);
-
+    public void saveIntialTimerMessageDetails(Context context) {
+        Cursor cursor = context.getContentResolver().query(MESSAGE__URI, null, null, null, null);
+        if (cursor != null) {
+            if (cursor.getCount() != 0){
+                ContentValues values = new ContentValues();
+                SharedPreferences sharedPreferences = getSharedPreferences("userinfo", 0);
+                values.put(DataBaseHandler.KEY_TIME, sharedPreferences.getString("alerttime", ""));
+                values.put(DataBaseHandler.KEY_MESSAGE, sharedPreferences.getString("alertmessage", ""));
+                int uri = getContentResolver().update(ContactsProvider.MESSAGE_URI, values,null,null);
+            }else {
+                ContentValues values = new ContentValues();
+                SharedPreferences sharedPreferences = getSharedPreferences("userinfo", 0);
+                values.put(DataBaseHandler.KEY_TIME, sharedPreferences.getString("alerttime", ""));
+                values.put(DataBaseHandler.KEY_MESSAGE, sharedPreferences.getString("alertmessage", ""));
+                Uri uri = getContentResolver().insert(ContactsProvider.MESSAGE_URI, values);
+            }
+        }
     }
 
     public ArrayList<ContactDetails> getContacts(Context context) {
@@ -174,7 +183,7 @@ public class SecurityApplication extends Application {
                 message.setTime((cursor.getString(cursor.getColumnIndex(DataBaseHandler.KEY_TIME))));
                 message.setMessage(cursor.getString(cursor.getColumnIndex(DataBaseHandler.KEY_MESSAGE)));
                 detailses.add(message);
-
+                //Log.w(".............",cursor.getString(cursor.getColumnIndex(DataBaseHandler.KEY_ID))+cursor.getString(cursor.getColumnIndex(DataBaseHandler.KEY_TIME)));
             } while (cursor.moveToNext());
         }
         cursor.close();
