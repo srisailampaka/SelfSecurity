@@ -93,7 +93,7 @@ public class ContactsProvider extends ContentProvider {
 
                 }
 
-break;
+                break;
             case MESSAGE:
                 long id1 = database.insert(DataBaseHandler.TABLE_MESSAGE_NAME, null, contentValues);
 
@@ -133,7 +133,7 @@ break;
                 updCount = database.update(DataBaseHandler.TABLE_CONTACTS_NAME, contentValues, s, strings);
                 break;
             case MESSAGE:
-                updCount = database.update(DataBaseHandler.TABLE_MESSAGE_NAME, contentValues, "_id=?", new String[] {String.valueOf(0)});
+                updCount = database.update(DataBaseHandler.TABLE_MESSAGE_NAME, contentValues, "_id=?", new String[]{String.valueOf(1)});
                 break;
             default:
                 throw new IllegalArgumentException("This is an Unknown URI " + uri);
