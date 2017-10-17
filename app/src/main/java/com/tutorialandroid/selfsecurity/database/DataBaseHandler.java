@@ -26,7 +26,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     public static final String[] ALL_CONTACTS_COLUMNS =
             {KEY_ID,KEY_NAME,KEY_NUMBER};
     public static final String[] ALL_MESSAGE_COLUMNS =
-            {KEY_ID,KEY_TIME,KEY_MESSAGE};
+            {KEY_ID,KEY_TIME,KEY_MESSAGE,KEY_NUMBER};
     private static final String CREATE_CONTACT_TABLE =
             " CREATE TABLE " + TABLE_CONTACTS_NAME + " (" +
                     KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
